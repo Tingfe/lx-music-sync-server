@@ -65,9 +65,11 @@ export const File = {
   dislikeDir: 'dislike',
   dislikeSnapshotDir: 'snapshot',
   dislikeSnapshotInfoJSON: 'snapshotInfo.json',
+  userApiJSON: 'userApi.json',
 } as const
 
 export const FeaturesList = [
   'list',
   'dislike',
+  'userApi',
 ] as const

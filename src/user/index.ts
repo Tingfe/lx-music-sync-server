@@ -3,11 +3,13 @@ import {
   ListManage,
   DislikeManage,
 } from '@/modules'
+import { UserApiManage } from '@/modules/userApi'
 
 export interface UserSpace {
   dataManage: UserDataManage
   listManage: ListManage
   dislikeManage: DislikeManage
+  userApiManage: UserApiManage
   getDecices: () => Promise<LX.Sync.KeyInfo[]>
   removeDevice: (clientId: string) => Promise<void>
 }
@@ -37,10 +39,12 @@ export const getUserSpace = (userName: string) => {
     const dataManage = new UserDataManage(userName)
     const listManage = new ListManage(dataManage)
     const dislikeManage = new DislikeManage(dataManage)
+    const userApiManage = new UserApiManage(dataManage)
     users.set(userName, user = {
       dataManage,
       listManage,
       dislikeManage,
+      userApiManage,
       async getDecices() {
         return this.dataManage.getAllClientKeyInfo()
       },
