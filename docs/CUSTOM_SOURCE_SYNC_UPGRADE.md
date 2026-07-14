@@ -1,6 +1,6 @@
 # 自定义音源同步升级说明
 
-本文记录 `Tingfe/lx-music-sync-server` 的 `v2.1.3` 定制改动，以及 Docker 部署的升级方式。
+本文记录 `Tingfe/lx-music-sync-server` 的 `v2.1.4` 定制改动，以及 Docker 部署的升级方式。
 
 ## 此版本的改动
 
@@ -16,7 +16,7 @@
 本仓库推送 `vX.Y.Z` 标签会由 GitHub Actions 构建并推送多架构镜像：
 
 ```text
-tingfe/lx-music-sync-server:v2.1.3
+tingfe/lx-music-sync-server:v2.1.4
 ```
 
 首次发布需要在 GitHub Actions Secrets 配置 `DOCKER_HUB_USER` 和 `DOCKER_HUB_TOKEN`。
@@ -28,7 +28,7 @@ tingfe/lx-music-sync-server:v2.1.3
 使用 Docker Compose 时，将镜像版本更新为：
 
 ```yaml
-image: tingfe/lx-music-sync-server:v2.1.3
+image: tingfe/lx-music-sync-server:v2.1.4
 ```
 
 并确保仍有持久化挂载，例如：
@@ -48,7 +48,7 @@ docker compose up -d
 若未使用 Compose，可按实际容器名称更新：
 
 ```bash
-docker pull tingfe/lx-music-sync-server:v2.1.3
+docker pull tingfe/lx-music-sync-server:v2.1.4
 docker stop lx-music-sync-server
 docker rm lx-music-sync-server
 # 使用原来的端口、环境变量和 /server/data 挂载重新 docker run
@@ -58,7 +58,7 @@ docker rm lx-music-sync-server
 
 ## 推荐升级与验证顺序
 
-1. 先升级 Docker 服务端至 `v2.1.3`。
+1. 先升级 Docker 服务端至 `v2.1.4`。
 2. 再安装支持此功能的移动端 Debug APK。
 3. 在一台设备导入可信 JS 音源并连接同步服务。
 4. 在另一台设备连接同一账号，确认音源自动出现、可加载并正常使用。
