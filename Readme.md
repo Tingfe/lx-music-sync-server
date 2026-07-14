@@ -234,6 +234,8 @@ server {
 docker build -t lx-music-sync-server .
 ```
 
-或者使用已发布到 Docker Hub 的镜像：<https://hub.docker.com/r/lyswhut/lx-music-sync-server>
+或者使用本 Fork 发布到 Docker Hub 的镜像：<https://hub.docker.com/r/tingfe/lx-music-sync-server>。
+
+例如：`docker pull tingfe/lx-music-sync-server:latest`。
 
 也可以看此 Issue 提供的解决方案：<https://github.com/lyswhut/lx-music-sync-server/issues/4>
