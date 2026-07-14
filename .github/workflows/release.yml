@@ -29,7 +29,9 @@ jobs:
         run: npm run build
 
       - name: Get package version
-        run: echo "PACKAGE_VERSION=$(node -p \"require('./package.json').version\")" >> "$GITHUB_ENV"
+        run: |
+          package_version="$(node -p "require('./package.json').version")"
+          echo "PACKAGE_VERSION=$package_version" >> "$GITHUB_ENV"
 
       - name: Create release archive
         run: zip -r "lx-music-sync-server_v${PACKAGE_VERSION}.zip" server ecosystem.config.js config.js index.js package-lock.json package.json LICENSE Readme.md
