@@ -1,17 +1,20 @@
 import { sync as listSync } from './list'
 import { sync as dislikeSync } from './dislike'
 import { sync as userApiSync } from './userApi'
+import { sync as settingsSync } from './settings'
 
 export const callObj = Object.assign({},
   listSync.handler,
   dislikeSync.handler,
   userApiSync.handler,
+  settingsSync.handler,
 )
 
 export const modules = {
   list: listSync,
   dislike: dislikeSync,
   userApi: userApiSync,
+  settings: settingsSync,
 }
 
 
@@ -23,4 +26,5 @@ export const featureVersion = {
   list: 1,
   dislike: 1,
   userApi: 1,
+  settings: 1,
 } as const

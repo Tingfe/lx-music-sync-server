@@ -12,6 +12,7 @@ declare global {
         list: boolean
         dislike: boolean
         userApi: boolean
+        settings: boolean
       }
 
       onClose: (handler: (err: Error) => (void | Promise<void>)) => () => void
@@ -21,6 +22,7 @@ declare global {
       remoteQueueList: LX.Sync.ClientSyncListActions
       remoteQueueDislike: LX.Sync.ClientSyncDislikeActions
       remoteQueueUserApi: LX.Sync.ClientSyncUserApiActions
+      remoteQueueSettings: LX.Sync.ClientSyncSettingsActions
     }
     type SocketServer = WS.Server<Socket>
   }

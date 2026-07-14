@@ -2,12 +2,13 @@
 
 LX Music 数据同步服务端。本项目目前用于收藏列表数据同步，类似桌面版的数据同步服务，只不过它现在是一个独立版的服务，可以将其部署到服务器上使用。
 
-### 本 Fork 的定制功能（v2.1.6）
+### 本 Fork 的定制功能（v2.1.7）
 
 - 新增 `userApi` 同步 feature：按同步账号保存并同步自定义音源的完整 JS 脚本及元信息。
 - 同一账号的在线设备在音源增删或更新后会收到实时同步通知。
 - 旧版 LX Music 客户端继续同步歌单、收藏和不喜欢列表；它们不支持的音源 feature 会被自动跳过。
-- Docker 发布镜像为 `tingfe/lx-music-sync-server:v2.1.6`，极空间更新时必须保留 `/server/data` 持久化挂载。
+- 新增 `settings` 同步 feature：保存主题、语言、播放与列表显示等跨设备设置；设备密钥、存储路径与缓存不会上传。
+- Docker 发布镜像为 `tingfe/lx-music-sync-server:v2.1.7`，极空间更新时必须保留 `/server/data` 持久化挂载。
 
 Docker 升级、数据保护和客户端兼容性请参阅[自定义音源同步升级说明](docs/CUSTOM_SOURCE_SYNC_UPGRADE.md)。
 

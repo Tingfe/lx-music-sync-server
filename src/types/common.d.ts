@@ -30,11 +30,15 @@ declare namespace LX {
     interface UserApiConfig {
       skipSnapshot: boolean
     }
+    interface SettingsConfig {
+      skipSnapshot: boolean
+    }
     type ServerType = 'desktop-app' | 'server'
     interface EnabledFeatures {
       list?: false | ListConfig
       dislike?: false | DislikeConfig
       userApi?: false | UserApiConfig
+      settings?: false | SettingsConfig
     }
     type SupportedFeatures = Partial<{ [k in keyof EnabledFeatures]: number }>
   }
