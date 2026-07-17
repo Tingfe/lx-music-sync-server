@@ -102,33 +102,34 @@ export const authCode = async(req: http.IncomingMessage, res: http.ServerRespons
   res.end(msg)
 }
 
-const verifyConnection = (encryptMsg: string, userId: string) => {
+export const getAuthClientInfo = (req: http.IncomingMessage) => {
+  const query = querystring.parse((req.url as string).split('?')[1])
+  const userId = query.i
+  const encryptMsg = query.t
+  if (typeof userId != 'string' || typeof encryptMsg != 'string') return null
   const userName = getUserName(userId)
   // console.log(userName)
-  if (!userName) return false
+  if (!userName) return null
   const userSpace = getUserSpace(userName)
   const keyInfo = userSpace.dataManage.getClientKeyInfo(userId)
-  if (!keyInfo) return false
+  if (!keyInfo) return null
   let text
   try {
     text = aesDecrypt(encryptMsg, keyInfo.key)
   } catch (err) {
-    return false
+    return null
   }
   // console.log(text)
-  return text == SYNC_CODE.msgConnect
+  if (text != SYNC_CODE.msgConnect) return null
+  return { userName, userSpace, keyInfo }
 }
 export const authConnect = async(req: http.IncomingMessage) => {
   let ip = getAvailableIP(req)
   if (ip) {
-    const query = querystring.parse((req.url as string).split('?')[1])
-    const i = query.i
-    const t = query.t
-    if (typeof i == 'string' && typeof t == 'string' && verifyConnection(t, i)) return
+    if (getAuthClientInfo(req)) return
 
     const num = store.get<number>(ip) ?? 0
     store.set(ip, num + 1)
   }
   throw new Error('failed')
 }
-

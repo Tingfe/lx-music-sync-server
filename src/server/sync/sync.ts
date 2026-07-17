@@ -1,5 +1,6 @@
 import { FeaturesList } from '@/constants'
 import { featureVersion, modules } from '@/modules'
+import { getUserSpace } from '@/user'
 
 
 export const sync = async(socket: LX.Socket) => {
@@ -18,4 +19,6 @@ export const sync = async(socket: LX.Socket) => {
     if (disconnected) throw new Error('disconnected')
   }
   await socket.remote.finished()
+  socket.keyInfo.lastSyncDate = Date.now()
+  getUserSpace(socket.userInfo.name).dataManage.saveClientKeyInfo(socket.keyInfo)
 }

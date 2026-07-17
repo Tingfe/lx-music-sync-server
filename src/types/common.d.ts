@@ -18,6 +18,7 @@ declare namespace LX {
       key: string
       deviceName: string
       lastConnectDate?: number
+      lastSyncDate?: number
       isMobile: boolean
     }
 

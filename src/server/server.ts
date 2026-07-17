@@ -1,7 +1,7 @@
 import http, { type IncomingMessage } from 'node:http'
 import { WebSocketServer } from 'ws'
 import { registerLocalSyncEvent, callObj, sync } from './sync'
-import { authCode, authConnect } from './auth'
+import { authCode, authConnect, getAuthClientInfo } from './auth'
 import { getAddress, sendStatus, decryptMsg, encryptMsg } from '@/utils/tools'
 import { accessLog, startupLog, syncLog } from '@/utils/log4js'
 import { SYNC_CLOSE_CODE, SYNC_CODE } from '@/constants'
@@ -120,6 +120,41 @@ const authConnection = (req: http.IncomingMessage, callback: (err: string | null
 
 let wss: LX.SocketServer | null
 
+const handleDeviceRequest = (req: http.IncomingMessage, res: http.ServerResponse) => {
+  const authInfo = getAuthClientInfo(req)
+  if (!authInfo) {
+    res.writeHead(401)
+    res.end('Unauthorized')
+    return
+  }
+  if (req.method == 'GET') {
+    const devices = authInfo.userSpace.dataManage.getAllClientKeyInfo().map(({ key: _key, ...device }) => ({
+      ...device,
+      isOnline: [...(wss?.clients ?? [])].some(client => client.isReady && client.keyInfo.clientId == device.clientId),
+    }))
+    res.writeHead(200, { 'content-type': 'application/json; charset=utf-8' })
+    res.end(JSON.stringify({ devices }))
+    return
+  }
+  if (req.method == 'DELETE') {
+    const clientId = new URL(req.url as string, host).searchParams.get('clientId')
+    if (!clientId || clientId == authInfo.keyInfo.clientId || !authInfo.userSpace.dataManage.getClientKeyInfo(clientId)) {
+      res.writeHead(400)
+      res.end('Invalid device')
+      return
+    }
+    void authInfo.userSpace.dataManage.removeClientKeyInfo(clientId)
+    for (const client of [...(wss?.clients ?? [])]) {
+      if (client.keyInfo.clientId == clientId) client.close(SYNC_CLOSE_CODE.failed)
+    }
+    res.writeHead(204)
+    res.end()
+    return
+  }
+  res.writeHead(405)
+  res.end('Method Not Allowed')
+}
+
 function noop() {}
 function onSocketError(err: Error) {
   console.error(err)
@@ -128,7 +163,7 @@ function onSocketError(err: Error) {
 const handleStartServer = async(port = 9527, ip = '127.0.0.1') => await new Promise((resolve, reject) => {
   const httpServer = http.createServer((req, res) => {
     // console.log(req.url)
-    const endUrl = `/${req.url?.split('/').at(-1) ?? ''}`
+    const endUrl = new URL(req.url as string, host).pathname
     let code
     let msg
     switch (endUrl) {
@@ -142,6 +177,9 @@ const handleStartServer = async(port = 9527, ip = '127.0.0.1') => await new Prom
         break
       case '/ah':
         void authCode(req, res, lx.config.users)
+        break
+      case '/devices':
+        handleDeviceRequest(req, res)
         break
       default:
         code = 401
