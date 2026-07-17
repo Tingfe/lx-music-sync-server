@@ -1,5 +1,4 @@
 const syncedKeys = new Set([
-  'common.langId',
   'common.sourceNameType',
   'player.togglePlayMethod',
   'player.playQuality',
