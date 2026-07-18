@@ -250,6 +250,7 @@ const handleStartServer = async(port = 9527, ip = '127.0.0.1') => await new Prom
     socket.remoteQueueDislike = msg2call.createQueueRemote('dislike')
     socket.remoteQueueUserApi = msg2call.createQueueRemote('userApi')
     socket.remoteQueueSettings = msg2call.createQueueRemote('settings')
+    socket.remoteQueueRemoteControl = msg2call.createQueueRemote('remoteControl')
     socket.addEventListener('message', ({ data }) => {
       if (typeof data != 'string') return
       void decryptMsg(socket.keyInfo, data).then((data) => {

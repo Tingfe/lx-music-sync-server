@@ -2,12 +2,14 @@ import { sync as listSync } from './list'
 import { sync as dislikeSync } from './dislike'
 import { sync as userApiSync } from './userApi'
 import { sync as settingsSync } from './settings'
+import * as remoteControl from './remoteControl'
 
 export const callObj = Object.assign({},
   listSync.handler,
   dislikeSync.handler,
   userApiSync.handler,
   settingsSync.handler,
+  remoteControl.handler,
 )
 
 export const modules = {

@@ -23,6 +23,7 @@ declare global {
       remoteQueueDislike: LX.Sync.ClientSyncDislikeActions
       remoteQueueUserApi: LX.Sync.ClientSyncUserApiActions
       remoteQueueSettings: LX.Sync.ClientSyncSettingsActions
+      remoteQueueRemoteControl: LX.Sync.ClientSyncRemoteControlActions
     }
     type SocketServer = WS.Server<Socket>
   }

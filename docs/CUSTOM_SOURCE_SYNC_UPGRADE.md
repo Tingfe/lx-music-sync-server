@@ -1,6 +1,6 @@
 # 自定义音源同步升级说明
 
-本文记录 `Tingfe/lx-music-sync-server` 的 `v2.1.10` 定制改动，以及 Docker 部署的升级方式。
+本文记录 `Tingfe/lx-music-sync-server` 的 `v2.1.11` 定制改动，以及 Docker 部署的升级方式。
 
 ## 此版本的改动
 
@@ -12,6 +12,8 @@
 - 新增设备状态接口：保存每台设备最近完成同步的时间，并供新版客户端查看在线状态、最近连接时间及最近同步时间。
 - 可以从新版客户端移除其他设备；服务端会立即断开该设备，并删除其密钥。被移除设备需要重新输入连接码后才可恢复同步。
 - 语言、主题、下载目录、音频设备、窗口/车机显示等终端专属设置不会再保存或下发；服务端读取旧 `settings.json` 时会自动移除这些历史字段。移动端与桌面端的语言 ID 格式不同，因此语言必须保持设备本地设置。
+- 新增在线车机遥控中继：车机连接并登记后，手机可查询在线车机并发送播放、暂停、上一首、下一首及选歌播放命令。
+- 遥控连接不写入歌单、设置或音源数据；车机离线时服务端不会缓存命令，命令直接返回离线状态。
 
 现有歌单、收藏和不喜欢列表同步协议保持兼容。旧客户端不认识 `userApi` feature，会自动跳过它；新客户端连接旧服务端时也不会影响既有同步。
 
@@ -20,7 +22,7 @@
 本仓库推送 `vX.Y.Z` 标签会由 GitHub Actions 构建并推送多架构镜像：
 
 ```text
-tingfe/lx-music-sync-server:v2.1.10
+tingfe/lx-music-sync-server:v2.1.11
 ```
 
 首次发布需要在 GitHub Actions Secrets 配置 `DOCKER_HUB_USER` 和 `DOCKER_HUB_TOKEN`。
@@ -32,7 +34,7 @@ tingfe/lx-music-sync-server:v2.1.10
 使用 Docker Compose 时，将镜像版本更新为：
 
 ```yaml
-image: tingfe/lx-music-sync-server:v2.1.10
+image: tingfe/lx-music-sync-server:v2.1.11
 ```
 
 并确保仍有持久化挂载，例如：
@@ -52,7 +54,7 @@ docker compose up -d
 若未使用 Compose，可按实际容器名称更新：
 
 ```bash
-docker pull tingfe/lx-music-sync-server:v2.1.10
+docker pull tingfe/lx-music-sync-server:v2.1.11
 docker stop lx-music-sync-server
 docker rm lx-music-sync-server
 # 使用原来的端口、环境变量和 /server/data 挂载重新 docker run
@@ -62,11 +64,12 @@ docker rm lx-music-sync-server
 
 ## 推荐升级与验证顺序
 
-1. 先升级 Docker 服务端至 `v2.1.10`。
-2. 再安装支持此功能的移动端 Debug APK。
+1. 先升级 Docker 服务端至 `v2.1.11`。
+2. 再安装支持在线车机遥控的移动端与车机端 APK。
 3. 在一台设备导入可信 JS 音源并连接同步服务。
 4. 在另一台设备连接同一账号，确认音源自动出现、可加载并正常使用。
 5. 在新版桌面端的「设置 → 数据同步 → 已连接设备」确认两台设备的最近同步时间；若要撤销旧设备，在此移除它。
+6. 车机保持在线时，在手机「设置 → 数据同步 → 控制在线车机」中刷新设备状态并测试切歌或播放手机当前歌曲。
 
 首次连接空服务端时，服务端保存第一台设备上传的音源。服务端已有音源后会作为后续设备连接时的权威副本，避免老设备覆盖新配置。
 
