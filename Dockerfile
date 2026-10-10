@@ -10,6 +10,7 @@ RUN apk add --update \
     py3-pip \
     nodejs \
     npm \
+  && chmod +x /usr/lib/node_modules/npm/node_modules/node-gyp/gyp/gyp_main.py \
   && npm ci && npm run test:regression && npm run build \
   && rm -rf node_modules && npm ci --omit=dev \
   && mkdir build-output \

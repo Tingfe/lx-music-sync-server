@@ -1,6 +1,6 @@
 {
   "name": "lx-music-sync-server",
-  "version": "2.1.14",
+  "version": "2.1.15",
   "private": true,
   "scripts": {
     "test:privacy": "node --test tests/privacy.test.cjs",

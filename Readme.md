@@ -4,7 +4,7 @@
 
 - Docker 镜像：[`tingfe/lx-music-sync-server`](https://hub.docker.com/r/tingfe/lx-music-sync-server)
 - 客户端：[`lx-music-mobile`](https://github.com/Tingfe/lx-music-mobile)、[`lx-music-desktop`](https://github.com/Tingfe/lx-music-desktop)、[`lx-music-car`](https://github.com/Tingfe/lx-music-car)
-- 当前服务端版本：`v2.1.14`
+- 当前服务端版本：`v2.1.15`
 
 ## 本 Fork 的功能
 
@@ -23,7 +23,7 @@ v2.1.12 增加设置值校验，并修复车机短暂超时后无法再次发现
 ```yaml
 services:
   lx-sync:
-    image: tingfe/lx-music-sync-server:v2.1.14
+    image: tingfe/lx-music-sync-server:v2.1.15
     container_name: lx-music-sync-server
     restart: unless-stopped
     ports:
@@ -55,7 +55,7 @@ Docker Hub Overview 会在本 README 更新后单独自动同步；支持从 Act
 
 ## 隐私保护
 
-v2.1.14 包含隐私加固并修复 Docker 构建上下文：日志脱敏、敏感文件忽略规则和发布前隐私回归检查均已接入。公网同步必须使用 HTTPS/WSS；已有旧日志不会自动清理。详情见：[隐私与安全说明](docs/PRIVACY_SECURITY.md)。
+v2.1.15 包含隐私加固并修复 Docker 构建环境：日志脱敏、敏感文件忽略规则和发布前隐私回归检查均已接入。公网同步必须使用 HTTPS/WSS；已有旧日志不会自动清理。详情见：[隐私与安全说明](docs/PRIVACY_SECURITY.md)。
 
 ## 上游项目与许可证
 

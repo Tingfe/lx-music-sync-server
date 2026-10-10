@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.1.15] - 2026-10-11
+
+- 修复 Alpine npm 所带 node-gyp Python 入口缺少执行权限导致 ARM/v7 原生依赖编译失败。
+- 包含 v2.1.13–v2.1.14 的隐私保护与构建修复；Docker 部署请使用本版本。
+
 ## [2.1.14] - 2026-10-11
 
 - 修复 Docker 构建未包含隐私检查所需的 .gitignore；该文件仅用于构建测试，不进入最终运行镜像。
