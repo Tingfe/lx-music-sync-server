@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.1.14] - 2026-10-11
+
+- 修复 Docker 构建未包含隐私检查所需的 .gitignore；该文件仅用于构建测试，不进入最终运行镜像。
+- 包含下述 v2.1.13 隐私加固。Docker 部署请使用本版本。
+
 ## [2.1.13] - 2026-10-11
 
 ### 隐私保护
