@@ -4,7 +4,7 @@
 
 - Docker 镜像：[`tingfe/lx-music-sync-server`](https://hub.docker.com/r/tingfe/lx-music-sync-server)
 - 客户端：[`lx-music-mobile`](https://github.com/Tingfe/lx-music-mobile)、[`lx-music-desktop`](https://github.com/Tingfe/lx-music-desktop)、[`lx-music-car`](https://github.com/Tingfe/lx-music-car)
-- 当前服务端版本：`v2.1.11`
+- 当前服务端版本：`v2.1.12`
 
 ## 本 Fork 的功能
 
@@ -14,6 +14,8 @@
 - 支持同账号在线车机：手机可读取车机播放状态、切歌、播放/暂停，并将手机当前歌曲发送给车机。
 - 保持旧客户端兼容：不认识的扩展同步 feature 会被跳过，原有同步不受影响。
 
+v2.1.12 增加设置值校验，并修复车机短暂超时后无法再次发现的问题。手机端 v1.8.12 可区分操作失败与离线；现有车机端无需升级即可获得服务端恢复改进。
+
 ## Docker 部署与升级
 
 极空间等 Docker 环境建议持久化挂载 `/server/data`：
@@ -21,7 +23,7 @@
 ```yaml
 services:
   lx-sync:
-    image: tingfe/lx-music-sync-server:v2.1.11
+    image: tingfe/lx-music-sync-server:v2.1.12
     container_name: lx-music-sync-server
     restart: unless-stopped
     ports:

@@ -13,7 +13,7 @@ const getCarInfo = async(socket: LX.Socket): Promise<LX.Sync.RemoteControl.CarIn
       status,
     }
   } catch {
-    unregisterCar(socket)
+    // A status timeout does not mean the WebSocket has disconnected.
     return null
   }
 }
@@ -41,8 +41,7 @@ const handler: LX.Sync.ServerSyncHandlerRemoteControlActions<LX.Socket> = {
     try {
       return await car.remoteQueueRemoteControl.onCommand(command)
     } catch {
-      unregisterCar(car)
-      throw new Error('car_offline')
+      throw new Error('car_command_failed')
     }
   },
 }

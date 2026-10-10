@@ -28,6 +28,9 @@ jobs:
       - name: Build source code
         run: npm run build
 
+      - name: Sync regression checks
+        run: npm run test:regression
+
       - name: Get package version
         run: |
           package_version="$(node -p "require('./package.json').version")"

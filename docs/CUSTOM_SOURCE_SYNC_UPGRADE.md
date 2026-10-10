@@ -1,6 +1,14 @@
 # 自定义音源同步升级说明
 
-本文记录 `Tingfe/lx-music-sync-server` 的 `v2.1.11` 定制改动，以及 Docker 部署的升级方式。
+本文记录 `Tingfe/lx-music-sync-server` 的 `v2.1.12` 定制改动，以及 Docker 部署的升级方式。
+
+## v2.1.12 更新（2026-10-11）
+
+- 手机和服务端按相同字段规则校验设置类型、枚举与速度范围（0.6–2.0）。非法值忽略；语言、主题和布局不参与同步。
+- 查询超时仅暂时不展示车机，不注销仍在线的 socket；下一次成功查询会恢复。
+- 遥控执行失败返回 car_command_failed，离线返回 car_offline。失败命令不重放；手机 v1.8.12 显示刷新重试提示。
+- 无数据格式迁移，复用原 `/server/data` 卷即可；建议升级前备份该卷。既有车机 APK 可继续使用。
+- 验证：`npm run test:regression` 和 `npm run build`；实车测试临时断网/播放失败后重新刷新状态。
 
 ## 此版本的改动
 
@@ -22,7 +30,7 @@
 本仓库推送 `vX.Y.Z` 标签会由 GitHub Actions 构建并推送多架构镜像：
 
 ```text
-tingfe/lx-music-sync-server:v2.1.11
+tingfe/lx-music-sync-server:v2.1.12
 ```
 
 首次发布需要在 GitHub Actions Secrets 配置 `DOCKER_HUB_USER` 和 `DOCKER_HUB_TOKEN`。
@@ -34,7 +42,7 @@ tingfe/lx-music-sync-server:v2.1.11
 使用 Docker Compose 时，将镜像版本更新为：
 
 ```yaml
-image: tingfe/lx-music-sync-server:v2.1.11
+image: tingfe/lx-music-sync-server:v2.1.12
 ```
 
 并确保仍有持久化挂载，例如：
@@ -54,7 +62,7 @@ docker compose up -d
 若未使用 Compose，可按实际容器名称更新：
 
 ```bash
-docker pull tingfe/lx-music-sync-server:v2.1.11
+docker pull tingfe/lx-music-sync-server:v2.1.12
 docker stop lx-music-sync-server
 docker rm lx-music-sync-server
 # 使用原来的端口、环境变量和 /server/data 挂载重新 docker run
@@ -64,7 +72,7 @@ docker rm lx-music-sync-server
 
 ## 推荐升级与验证顺序
 
-1. 先升级 Docker 服务端至 `v2.1.11`。
+1. 先升级 Docker 服务端至 `v2.1.12`。
 2. 再安装支持在线车机遥控的移动端与车机端 APK。
 3. 在一台设备导入可信 JS 音源并连接同步服务。
 4. 在另一台设备连接同一账号，确认音源自动出现、可加载并正常使用。

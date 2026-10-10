@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.1.12] - 2026-10-11
+
+### 同步与遥控可靠性
+
+- 设置同步校验类型、枚举与播放速度范围（0.6–2.0），拒绝未知字段和终端专属设置。
+- 状态查询超时不再注销仍在线的车机，后续刷新可自动恢复发现。
+- 执行失败返回 car_command_failed，真正离线返回 car_offline；失败命令不缓存、不自动重放。
+- 增加设置、车机恢复、账号隔离和旧连接关闭的回归检查，发布与 Docker 构建前执行。
+
 Project versioning adheres to [Semantic Versioning](http://semver.org/).
 Commit convention is based on [Conventional Commits](http://conventionalcommits.org).
 Change log format is based on [Keep a Changelog](http://keepachangelog.com/).

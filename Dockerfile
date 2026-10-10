@@ -10,7 +10,7 @@ RUN apk add --update \
     py3-pip \
     nodejs \
     npm \
-  && npm ci && npm run build \
+  && npm ci && npm run test:regression && npm run build \
   && rm -rf node_modules && npm ci --omit=dev \
   && mkdir build-output \
   && mv server node_modules config.js index.js package.json -t build-output

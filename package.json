@@ -1,8 +1,9 @@
 {
   "name": "lx-music-sync-server",
-  "version": "2.1.11",
+  "version": "2.1.12",
   "private": true,
   "scripts": {
+    "test:regression": "node --test tests/*.test.cjs",
     "build": "rimraf server && tsc --project tsconfig.json && tsc-alias -p tsconfig.json",
     "start": "node ./index.js",
     "dev": "nodemon",
