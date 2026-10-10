@@ -42,7 +42,7 @@ tingfe/lx-music-sync-server:v2.1.12
 使用 Docker Compose 时，将镜像版本更新为：
 
 ```yaml
-image: tingfe/lx-music-sync-server:v2.1.12
+    image: tingfe/lx-music-sync-server:v2.1.13
 ```
 
 并确保仍有持久化挂载，例如：
@@ -62,7 +62,7 @@ docker compose up -d
 若未使用 Compose，可按实际容器名称更新：
 
 ```bash
-docker pull tingfe/lx-music-sync-server:v2.1.12
+docker pull tingfe/lx-music-sync-server:v2.1.13
 docker stop lx-music-sync-server
 docker rm lx-music-sync-server
 # 使用原来的端口、环境变量和 /server/data 挂载重新 docker run

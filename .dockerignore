@@ -3,3 +3,11 @@
 node_modules
 data
 logs
+.env
+.env.*
+*.jks
+*.p12
+*.pfx
+*.pem
+*.key
+.DS_Store

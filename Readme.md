@@ -4,7 +4,7 @@
 
 - Docker 镜像：[`tingfe/lx-music-sync-server`](https://hub.docker.com/r/tingfe/lx-music-sync-server)
 - 客户端：[`lx-music-mobile`](https://github.com/Tingfe/lx-music-mobile)、[`lx-music-desktop`](https://github.com/Tingfe/lx-music-desktop)、[`lx-music-car`](https://github.com/Tingfe/lx-music-car)
-- 当前服务端版本：`v2.1.12`
+- 当前服务端版本：`v2.1.13`
 
 ## 本 Fork 的功能
 
@@ -23,7 +23,7 @@ v2.1.12 增加设置值校验，并修复车机短暂超时后无法再次发现
 ```yaml
 services:
   lx-sync:
-    image: tingfe/lx-music-sync-server:v2.1.12
+    image: tingfe/lx-music-sync-server:v2.1.13
     container_name: lx-music-sync-server
     restart: unless-stopped
     ports:
@@ -43,6 +43,8 @@ docker compose up -d
 
 完整部署、迁移、数据恢复与兼容性说明见：[升级说明](docs/CUSTOM_SOURCE_SYNC_UPGRADE.md)。
 
+Docker Hub Overview 会在本 README 更新后单独自动同步；支持从 Actions 手动运行 `Sync Docker Hub Overview`。复用仓库 Secrets `DOCKER_HUB_USER` 与 `DOCKER_HUB_TOKEN`，不要填写明文账号密码到源码。若出现 403，需检查令牌是否有更新仓库描述所需权限；它与镜像构建相互独立。
+
 ## 使用方式
 
 1. 部署服务端并确保客户端可访问其地址。
@@ -50,6 +52,10 @@ docker compose up -d
 3. 先升级服务端，再升级客户端；首次接入时以服务端已有数据为准。
 
 自定义音源是可执行 JavaScript，只应在你信任的设备、账号和私有服务之间同步。
+
+## 隐私保护
+
+v2.1.13 清理认证与完整请求地址日志，加入日志脱敏、敏感文件忽略规则和发布前隐私回归检查。公网同步必须使用 HTTPS/WSS；已有旧日志不会自动清理。详情见：[隐私与安全说明](docs/PRIVACY_SECURITY.md)。
 
 ## 上游项目与许可证
 

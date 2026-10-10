@@ -41,7 +41,7 @@ let host = 'http://localhost'
 const checkDuplicateClient = (newSocket: LX.Socket) => {
   for (const client of [...wss!.clients]) {
     if (client === newSocket || client.keyInfo.clientId != newSocket.keyInfo.clientId) continue
-    syncLog.info('duplicate client', client.userInfo.name, client.keyInfo.deviceName)
+    syncLog.info('duplicate client')
     client.isReady = false
     for (const name of Object.keys(client.moduleReadys) as Array<keyof LX.Socket['moduleReadys']>) {
       client.moduleReadys[name] = false
@@ -96,7 +96,7 @@ const handleConnection = async(socket: LX.Socket, request: IncomingMessage) => {
   })
 
   // console.log('connection', keyInfo.deviceName)
-  accessLog.info('connection', user.name, keyInfo.deviceName)
+  accessLog.info('connection')
   // console.log(socket.handshake.query)
 
   socket.isReady = true
@@ -157,7 +157,7 @@ const handleDeviceRequest = (req: http.IncomingMessage, res: http.ServerResponse
 
 function noop() {}
 function onSocketError(err: Error) {
-  console.error(err)
+  syncLog.error(err)
 }
 
 const handleStartServer = async(port = 9527, ip = '127.0.0.1') => await new Promise((resolve, reject) => {
@@ -237,9 +237,7 @@ const handleStartServer = async(port = 9527, ip = '127.0.0.1') => await new Prom
       },
       onError(error, path, groupName) {
         const name = groupName ?? ''
-        const userName = socket.userInfo?.name ?? ''
-        const deviceName = socket.keyInfo?.deviceName ?? ''
-        syncLog.error(`sync call ${userName} ${deviceName} ${name} ${path.join('.')} error:`, error)
+        syncLog.error(`sync call ${name} ${path.join('.')} error:`, error)
         // if (groupName == null) return
         // // TODO
         // socket.close(SYNC_CLOSE_CODE.failed)
@@ -280,12 +278,11 @@ const handleStartServer = async(port = 9527, ip = '127.0.0.1') => await new Prom
       disconnected = true
       msg2call.destroy()
       if (socket.isReady) {
-        accessLog.info('deconnection', socket.userInfo.name, socket.keyInfo.deviceName)
+        accessLog.info('deconnection')
         // events = {}
         if (!status.devices.map(d => getUserName(d.clientId)).filter(n => n == socket.userInfo.name).length) handleUnconnection(socket.userInfo.name)
       } else {
-        const queryData = new URL(request.url as string, host).searchParams
-        accessLog.info('deconnection', queryData.get('i'))
+        accessLog.info('unauthed deconnection')
       }
     })
     socket.onClose = function(handler: typeof closeEvents[number]) {
@@ -323,7 +320,7 @@ const handleStartServer = async(port = 9527, ip = '127.0.0.1') => await new Prom
   const interval = setInterval(() => {
     wss?.clients.forEach(socket => {
       if (socket.isAlive == false) {
-        syncLog.info('alive check false:', socket.userInfo.name, socket.keyInfo.deviceName)
+        syncLog.info('alive check false')
         socket.terminate()
         return
       }

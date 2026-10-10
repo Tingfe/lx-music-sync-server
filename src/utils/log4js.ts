@@ -1,5 +1,6 @@
 import path from 'node:path'
 import log4js from 'log4js'
+import { formatLogValue } from './privacy'
 
 const createLogConfig = (logPath: string) => {
   return {
@@ -46,6 +47,18 @@ export const initLogger = () => {
 }
 
 
-export const startupLog = log4js.getLogger('startup')
-export const syncLog = log4js.getLogger('sync')
-export const accessLog = log4js.getLogger('access')
+const privateLogger = (category: string) => {
+  const logger = log4js.getLogger(category)
+  for (const method of ['trace', 'debug', 'info', 'warn', 'error', 'fatal'] as const) {
+    const write = logger[method].bind(logger)
+    logger[method] = (...values: unknown[]) => {
+      const [message, ...args] = values.map(formatLogValue)
+      write(message, ...args)
+    }
+  }
+  return logger
+}
+
+export const startupLog = privateLogger('startup')
+export const syncLog = privateLogger('sync')
+export const accessLog = privateLogger('access')

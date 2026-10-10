@@ -5,7 +5,6 @@ import zlib from 'node:zlib'
 import type http from 'node:http'
 // import getStore from '@/utils/store'
 import { syncLog } from './log4js'
-import { getUserName } from '../user/data'
 // import { saveClientKeyInfo } from './data'
 
 export const getAddress = (): string[] => {
@@ -107,6 +106,6 @@ export const decryptMsg = async(keyInfo: LX.Sync.KeyInfo | null, enMsg: string):
 // }
 
 export const sendStatus = (status: LX.Sync.Status) => {
-  syncLog.info('status', status.devices.map(d => `${getUserName(d.clientId) ?? ''} ${d.deviceName}`))
+  syncLog.info('status', { connectedDevices: status.devices.length })
 }
 

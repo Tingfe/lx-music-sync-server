@@ -89,7 +89,7 @@ export class SnapshotDataManage {
   }
 
   saveSnapshot = async(name: string, data: string) => {
-    syncLog.info('saveSnapshot', this.userDataManage.userName, name)
+    syncLog.info('saveSnapshot', name)
     const filePath = path.join(this.snapshotDir, `snapshot_${name}`)
     try {
       fs.writeFileSync(filePath, data)
@@ -100,7 +100,7 @@ export class SnapshotDataManage {
   }
 
   removeSnapshot = async(name: string) => {
-    syncLog.info('removeSnapshot', this.userDataManage.userName, name)
+    syncLog.info('removeSnapshot', name)
     const filePath = path.join(this.snapshotDir, `snapshot_${name}`)
     try {
       fs.unlinkSync(filePath)
